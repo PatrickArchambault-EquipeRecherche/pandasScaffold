@@ -19,16 +19,30 @@ def make_dt_index( dataframe , columnname ):
     return dataframe
 
 
+# Plot rows over time, based on a rows-per-interval approach
+def plotRowsOverTime( dataframe , datetimeIndexColumn , frequency):
+    """
+    The dataframe has to be using a datetime column as the index.
+    You then specify the frequency that you are looking for results on, i.e.
+    day, month, year, etc.
+    Day = D
+    Month = M
+    Read "pandas Grouper" documentation for details.
+    """
+    dataframe.groupby(pandas.Grouper(freq=frequency)).size().plot()
+    
 
 ###### Patterns ######
 
 # Connect two or more dataframes together that probably overlap, dropping 
 # whatever is duplicated
-newDataFrame = pandas.concat( [firstDataFrame , secondDataFrame] ).drop_duplicates()
+firstDataFrame = pandas.DataFrame()
+secondDataFrame = pandas.DataFrame()
+newDataFrame = pandas.concat( [firstDataFrame , firstDataFrame] ).drop_duplicates()
+
 
 # Change the encoding of NotANumber on import - useful when your data has 
 # inadvertent entries that are not null, like sodium (NA)
-
 from pandas._libs.parsers import STR_NA_VALUES
 
 disable_na_values = { "NA" }
