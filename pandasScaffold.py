@@ -25,3 +25,12 @@ def make_dt_index( dataframe , columnname ):
 # Connect two or more dataframes together that probably overlap, dropping 
 # whatever is duplicated
 newDataFrame = pandas.concat( [firstDataFrame , secondDataFrame] ).drop_duplicates()
+
+# Change the encoding of NotANumber on import - useful when your data has 
+# inadvertent entries that are not null, like sodium (NA)
+
+from pandas._libs.parsers import STR_NA_VALUES
+
+disable_na_values = { "NA" }
+my_default_na_values = STR_NA_VALUES - disable_na_values
+df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
