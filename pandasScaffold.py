@@ -7,6 +7,15 @@ import pandas
 
 ###### Functions ######
 
+# Find outliers in a column, characterize the data, count outliers, nulls
+def inspect_column( columnname ):
+    desc = f"""{columnname}\n
+    Nulls: {columnname.isna().sum()}"""
+
+
+    return desc
+
+
 # Index on datetime column
 def make_dt_index( dataframe , columnname ):
     """
@@ -30,7 +39,7 @@ def plotRowsOverTime( dataframe , datetimeIndexColumn , frequency):
     Read "pandas Grouper" documentation for details.
     """
     dataframe.groupby(pandas.Grouper(freq=frequency)).size().plot()
-    
+
 
 ###### Patterns ######
 
@@ -48,3 +57,7 @@ from pandas._libs.parsers import STR_NA_VALUES
 disable_na_values = { "NA" }
 my_default_na_values = STR_NA_VALUES - disable_na_values
 df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
+
+
+# Pad out values with 4 leading zeros on pandas.read_csv()
+df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
