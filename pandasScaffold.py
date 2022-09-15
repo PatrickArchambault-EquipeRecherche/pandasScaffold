@@ -20,7 +20,7 @@ def inspect_column( columnname ):
 def make_dt_index( dataframe , columnname ):
     """
     Usage example:
-    hr = make_dt_index( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIdexOn" )
+    hr = make_dt_index( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIndexOn" )
     """
     dataframe[columnname] = pandas.to_datetime( dataframe[columnname] )
     dataframe = dataframe.set_index( dataframe[columnname] )
@@ -29,7 +29,7 @@ def make_dt_index( dataframe , columnname ):
 
 
 # Plot rows over time, based on a rows-per-interval approach
-def plotRowsOverTime( dataframe , datetimeIndexColumn , frequency):
+def plotRowsOverTime( dataframe , frequency ):
     """
     The dataframe has to be using a datetime column as the index.
     You then specify the frequency that you are looking for results on, i.e.
@@ -61,3 +61,13 @@ df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
 
 # Pad out values with 4 leading zeros on pandas.read_csv()
 df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
+
+# Filter a dataframe into a subset that all meets a criteria.
+# In the example case, we use pandas.factorize() to get all of the values, 
+# because it _should_ be a small set, but there are mispellings, other 
+# weirdness that we have to find, so this pattern lets us group all rows 
+# that have the set of values in the list
+pos = ['DÉTECTÉ', 'DÉTEDÉTECTÉ', 'detecté', 'detecte', '03DÉTECTÉ']
+
+posCases = labsDF[labsDF["RESULTAT"].isin(pos)]
+
