@@ -7,6 +7,44 @@ import pandas
 
 ###### Functions ######
 
+# Collect the elements of a series by type - may be used for counting, but
+# also has utility for testing for maximum and minimum values in 
+# mixed-composition series
+def byType( series , printout=False ):
+    integers = []
+    strings = []
+    floats = []
+    booleans = []
+    nones = []
+    others = []
+
+    for element in series:
+        if type(element) == int:
+            integers.append(element)
+        elif type(element) == str:
+            strings.append(element)
+        elif type(element) == float:
+            floats.append(element)
+        elif type(element) == bool:
+            booleans.append(element)
+        elif type(element) == None:
+            nones.append(element)
+        else:
+            others.append(element)
+    
+    output = {"integers":integers,"strings":strings,"floats":floats,"booleans":booleans,"nones":nones,"others":others}
+
+    if printout == True:
+        print(f"Integers: {len(output['integers'])}\n\
+Strings: {len(output['strings'])}\n\
+Floats: {len(output['floats'])}\n\
+Booleans: {len(output['booleans'])}\n\
+Nones: {len(output['nones'])}\n\
+Others: {len(output['others'])}\n")
+    
+    return output
+
+
 # Find outliers in a column, characterize the data, count outliers, nulls
 def inspect_column( columnname ):
     desc = f"""{columnname}\n
@@ -69,5 +107,5 @@ df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.fo
 # that have the set of values in the list
 pos = ['DÉTECTÉ', 'DÉTEDÉTECTÉ', 'detecté', 'detecte', '03DÉTECTÉ']
 
-posCases = labsDF[labsDF["RESULTAT"].isin(pos)]
+posCases = firstDataFrame[firstDataFrame["RESULTAT"].isin(pos)]
 
