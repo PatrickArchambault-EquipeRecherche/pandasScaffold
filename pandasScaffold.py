@@ -54,7 +54,34 @@ def typeCoerce( mylist , dtype=float ):
 #typeCoerce([3,5,9,1,4.2,-9,99.76,0.1])
 
 
+# Return a dictionary with the maximum and minimum values of one ore more lists.
+# If not all of the values are the same type (intgers, floats) then we convert 
+# all of the elements to floats and then return the maximim and minimum values.
 
+def minMaxNumbers( *lists ):
+    if len(lists) > 1:
+        #print("Several lists.")
+        list_element_types = []
+        all_list_elements = []
+        for lst in lists:
+            for item in lst:
+                list_element_types.append(type(item))
+                all_list_elements.append(item)
+        if len(set(list_element_types)) == 1:
+            minimum = pandas.Series(all_list_elements).min()
+            maximum = pandas.Series(all_list_elements).max()
+        else:
+            #print(all_list_elements)
+            coerced_list = typeCoerce(all_list_elements)
+            minimum = pandas.Series(coerced_list).min()
+            maximum = pandas.Series(coerced_list).max()
+        #print(lists)
+    else:
+        #print("Just one list.")
+        minimum = pandas.Series(lists[0]).min()
+        maximum = pandas.Series(lists[0]).max()
+        
+    return {"minimum":minimum, "maximum":maximum}
 
 
 # Find outliers in a column, characterize the data, count outliers, nulls
