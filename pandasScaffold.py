@@ -45,6 +45,18 @@ Others: {len(output['others'])}\n")
     return output
 
 
+# Convert all elements of a list to some Type - useful for harmonizing list of 
+# numbers for getting maximum and minimum values.
+
+def typeCoerce( mylist , dtype=float ):
+    return list(map(dtype, mylist))
+
+#typeCoerce([3,5,9,1,4.2,-9,99.76,0.1])
+
+
+
+
+
 # Find outliers in a column, characterize the data, count outliers, nulls
 def inspect_column( columnname ):
     desc = f"""{columnname}\n
