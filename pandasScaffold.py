@@ -10,6 +10,7 @@ import pandas
 # Collect the elements of a series by type - may be used for counting, but
 # also has utility for testing for maximum and minimum values in 
 # mixed-composition series
+
 def byType( series , printout=False ):
     integers = []
     strings = []
@@ -57,6 +58,7 @@ def byType( series , printout=False ):
 # Take a column, run byType on it, and return the proportions of each type. 
 # Mostly an intermediate step to looking for outliers, 
 # minimum and maximum values, dates, etc.
+
 def proportionOfTypes( columnname , printout=False ):
     mytypes = byType(columnname)
     total_length = len(columnname)
@@ -98,7 +100,7 @@ def typeCoerce( mylist , dtype=float ):
 
 # Return a dictionary with the maximum and minimum values of one or more lists.
 # If not all of the values are the same type (intgers, floats) then we convert 
-# all of the elements to floats and then return the maximim and minimum values.
+# all of the elements to floats and then return the maximum and minimum values.
 
 def minMaxNumbers( *lists ):
     if len(lists) > 1:
@@ -127,6 +129,7 @@ def minMaxNumbers( *lists ):
 
 
 # Find outliers in a column, characterize the data, count outliers, nulls
+
 def inspect_column( columnname ):
     desc = f"""{columnname}\n
     Nulls: {columnname.isna().sum()}"""
@@ -136,10 +139,11 @@ def inspect_column( columnname ):
 
 
 # Index on datetime column
-def make_dt_index( dataframe , columnname ):
+
+def makeDateTimeIndex( dataframe , columnname ):
     """
     Usage example:
-    hr = make_dt_index( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIndexOn" )
+    hr = makeDateTimeIndex( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIndexOn" )
     """
     dataframe[columnname] = pandas.to_datetime( dataframe[columnname] )
     dataframe = dataframe.set_index( dataframe[columnname] )
@@ -148,6 +152,7 @@ def make_dt_index( dataframe , columnname ):
 
 
 # Plot rows over time, based on a rows-per-interval approach
+
 def plotRowsOverTime( dataframe , frequency ):
     """
     The dataframe has to be using a datetime column as the index.
@@ -181,11 +186,13 @@ df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
 # Pad out values with 4 leading zeros on pandas.read_csv()
 df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
 
+
 # Filter a dataframe into a subset that all meets a criteria.
 # In the example case, we use pandas.factorize() to get all of the values, 
 # because it _should_ be a small set, but there are mispellings, other 
 # weirdness that we have to find, so this pattern lets us group all rows 
 # that have the set of values in the list
+
 pos = ['DÉTECTÉ', 'DÉTEDÉTECTÉ', 'detecté', 'detecte', '03DÉTECTÉ']
 
 posCases = firstDataFrame[firstDataFrame["RESULTAT"].isin(pos)]
