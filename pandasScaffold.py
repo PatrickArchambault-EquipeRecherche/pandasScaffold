@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-"""A set of functions to make working with Python Pandas a little easier, or 
-to collect idioms and patterns that are useful."""
+"""A set of functions to make working with Python Pandas a little easier,
+and to collect idioms and patterns that are useful."""
 
 import pandas
 
@@ -32,7 +32,14 @@ def byType( series , printout=False ):
         else:
             others.append(element)
     
-    output = {"integers":integers,"strings":strings,"floats":floats,"booleans":booleans,"nones":nones,"others":others}
+    output = {
+                "integers":integers,\
+                "strings":strings,\
+                "floats":floats,\
+                "booleans":booleans,\
+                "nones":nones,\
+                "others":others\
+            }
 
     if printout == True:
         po = f"Integers: {len(output['integers'])}\n"
@@ -47,16 +54,49 @@ def byType( series , printout=False ):
     return output
 
 
+# Take a column, run byType on it, and return the proportions of each type. 
+# Mostly an intermediate step to looking for outliers, 
+# minimum and maximum values, dates, etc.
+def proportionOfTypes( columnname , printout=False ):
+    mytypes = byType(columnname)
+    total_length = len(columnname)
+    int_prop = len(mytypes["integers"]) / total_length * 100
+    str_prop = len(mytypes["strings"]) / total_length * 100
+    float_prop = len(mytypes["floats"]) / total_length * 100
+    boolean_prop = len(mytypes["booleans"]) / total_length * 100
+    none_prop = len(mytypes["nones"]) / total_length * 100
+    other_prop = len(mytypes["others"]) / total_length * 100
+
+    output = {
+                "integers"  :   int_prop,\
+                "strings"   :   str_prop,\
+                "floats"    :   float_prop,\
+                "booleans"  :   boolean_prop,\
+                "nones"     :   none_prop,\
+                "others"    :   other_prop\
+            }
+
+    if printout == True:
+        po = f"Integers: {int_prop}\n"
+        po = po + f"Strings: {str_prop}\n"
+        po = po + f"Floats: {float_prop}\n"
+        po = po + f"Booleans: {boolean_prop}\n"
+        po = po + f"Nones: {none_prop}\n"
+        po = po + f"Others: {other_prop}\n"
+
+        print(po)
+
+    return output
+
+
 # Convert all elements of a list to some Type - useful for harmonizing list of 
 # numbers for getting maximum and minimum values.
 
 def typeCoerce( mylist , dtype=float ):
     return list(map(dtype, mylist))
 
-#typeCoerce([3,5,9,1,4.2,-9,99.76,0.1])
 
-
-# Return a dictionary with the maximum and minimum values of one ore more lists.
+# Return a dictionary with the maximum and minimum values of one or more lists.
 # If not all of the values are the same type (intgers, floats) then we convert 
 # all of the elements to floats and then return the maximim and minimum values.
 
