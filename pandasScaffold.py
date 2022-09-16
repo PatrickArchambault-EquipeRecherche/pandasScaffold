@@ -35,12 +35,14 @@ def byType( series , printout=False ):
     output = {"integers":integers,"strings":strings,"floats":floats,"booleans":booleans,"nones":nones,"others":others}
 
     if printout == True:
-        print(f"Integers: {len(output['integers'])}\n\
-Strings: {len(output['strings'])}\n\
-Floats: {len(output['floats'])}\n\
-Booleans: {len(output['booleans'])}\n\
-Nones: {len(output['nones'])}\n\
-Others: {len(output['others'])}\n")
+        po = f"Integers: {len(output['integers'])}\n"
+        po = po + f"Strings: {len(output['strings'])}\n"
+        po = po + f"Floats: {len(output['floats'])}\n"
+        po = po + f"Booleans: {len(output['booleans'])}\n"
+        po = po + f"Nones: {len(output['nones'])}\n"
+        po = po + f"Others: {len(output['others'])}\n"
+
+        print(po)
     
     return output
 
