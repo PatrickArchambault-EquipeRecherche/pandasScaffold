@@ -191,7 +191,9 @@ def inspect_column( columnname , printout=True ):
     info["maxvalue"] = column_max
     info["minvalue"] = column_min
 
-    codes, uniques = pandas.factorize(columnname)
+    codes, uniques = pandas.factorize(columnname, use_na_sentinel=False)
+    # We want to know how much of the column is nulls, so we keep them in the 
+    # "uniques" list by changing the default behaviour of factorize.
     info["factorcount"] = len(uniques)
     if len(uniques) < 11:
         info["uniquevalues"] = uniques.values
