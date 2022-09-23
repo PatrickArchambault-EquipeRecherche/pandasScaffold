@@ -4,6 +4,7 @@
 and to collect idioms and patterns that are useful."""
 
 import pandas
+import dateutil
 
 ###### Functions ######
 
@@ -75,7 +76,8 @@ def proportionOfTypes( columnname , printout=False ):
                 "floats"    :   float_prop,\
                 "booleans"  :   boolean_prop,\
                 "nones"     :   none_prop,\
-                "others"    :   other_prop\
+                "others"    :   other_prop,\
+                "mytypes"   :   mytypes\
             }
 
     if printout == True:
@@ -130,12 +132,96 @@ def minMaxNumbers( *lists ):
 
 # Find outliers in a column, characterize the data, count outliers, nulls
 
-def inspect_column( columnname ):
-    desc = f"""{columnname}\n
-    Nulls: {columnname.isna().sum()}"""
+def inspect_column( columnname , printout=True ):
+    """
+    Look at the column, extract some information about it, and produce a set 
+    of information that can be inferred without reading the whole column for 
+    outliers, weirdness, values used to infer "not available", and whatever 
+    else we can figure out automatically. 
+    """
+    info = {}
+    column_types = proportionOfTypes(columnname)
+    # Note that column_types is a dictionary with the following elements:
+    # "integers, strings, floats, booleans, nones, others, mytypes."
+    # The first six elements contain the percentage proportion of those types 
+    # to the rest of the column, and mytypes is a nested dictionary with the 
+    # same element names, but including lists of the elements of those types.
+    
+    info = {\
+        "rowcount":len(columnname),\
+        "factorcount":0,\
+        "maxvalue":0,\
+        "minvalue":0,\
+        "minvalue":0,\
+        "datecount":0,\
+        "notdatecount":0,\
+        "nullcount":0\
+    }
 
+    notdate = 0
+    nulls = 0
+    isdate = 0
+    possible_dates = []
 
-    return desc
+    for item in columnname:
+        """Loop through the column, """
+        #print(item)
+        if pandas.notna(item):
+            if dateutil.parser.parse(item, fuzzy=True):
+                possible_dates.append(dateutil.parser.parse(item))
+                isdate = isdate + 1
+            else:
+                notdate = notdate + 1
+        else:
+            nulls = nulls + 1
+    notdate = notdate + nulls
+    info["notdatecount"] = notdate
+
+    if len(possible_dates) > 0:
+        column_max = pandas.Series(possible_dates).max()
+        column_min = pandas.Series(possible_dates).min()
+    elif column_types["strings"] == 0:
+        min_max_numbers = minMaxNumbers(columnname)
+        column_max = min_max_numbers["maximum"]
+        column_min = min_max_numbers["minimum"]
+    else:
+        column_max = "No maximum"
+        column_min = "No minimum"
+
+    info["maxvalue"] = column_max
+    info["minvalue"] = column_min
+
+    codes, uniques = pandas.factorize(columnname)
+    info["factorcount"] = len(uniques)
+    if len(uniques) < 11:
+        info["uniquevalues"] = uniques.values
+        pairs = {}
+        for uniq in uniques:
+            pairs[uniq] = columnname.loc[columnname == uniq].count()
+            proportionOfFactors = "Proportion of factors:\n"
+            factorProps = {}
+            for key in pairs:
+                proportionOfFactors = proportionOfFactors + f"{key}:\t\t\t{pairs[key] / len(columnname) * 100}%\n"
+                factorProps[key] = pairs[key] / len(columnname) * 100
+            info["factorprops"] = factorProps
+    else:
+        print("Ten factors or more.")
+
+    po = "Column Details:\n"
+    po = po + f"Number of Rows: {len(columnname)}\n"
+    po = po + f"Number Factors: {len(uniques)}\n"
+    if proportionOfFactors:
+        po = po + proportionOfFactors
+    po = po + f"Maximun value: {column_max}\n"
+    po = po + f"Minimum value: {column_min}\n"
+    po = po + f"Number of possible dates: {isdate}\n"
+    po = po + f"Number of non-dates: {notdate}\n"
+    po = po + f"Number of nulls: {nulls}\n"
+
+    if printout == True:
+        print(po)
+    
+    return info
 
 
 # Index on datetime column
