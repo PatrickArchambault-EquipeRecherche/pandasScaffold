@@ -3,6 +3,7 @@
 """A set of functions to make working with Python Pandas a little easier,
 and to collect idioms and patterns that are useful."""
 
+from dis import dis
 import pandas
 import dateutil
 
@@ -130,7 +131,59 @@ def minMaxNumbers( *lists ):
     return {"minimum":minimum, "maximum":maximum}
 
 
-# Find outliers in a column, characterize the data, count outliers, nulls
+# Return a dictionary with the maximum and minimum values of one or more 
+# lists of dates.
+
+def minMaxDates( *lists ):
+    def discardNonDates( listofdates ):
+        justdates = []
+        for item in listofdates:
+            if pandas.notna(item):
+                if dateutil.parser.parse(item, fuzzy=True):
+                    justdates.append(dateutil.parser.parse(item))
+
+        return justdates
+
+    if len(lists) > 1:
+        all_list_elements = []
+        for lst in lists:
+            for item in lst:
+                all_list_elements.append(item)       
+    else:
+        all_list_elements = lists[0]
+    
+    return {"minimum":pandas.Series(discardNonDates(all_list_elements)).min(),\
+            "maximum":pandas.Series(discardNonDates(all_list_elements)).max()}
+
+
+# Index on datetime column
+
+def makeDateTimeIndex( dataframe , columnname ):
+    """
+    Usage example:
+    hr = makeDateTimeIndex( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIndexOn" )
+    """
+    dataframe[columnname] = pandas.to_datetime( dataframe[columnname] )
+    dataframe = dataframe.set_index( dataframe[columnname] )
+
+    return dataframe
+
+
+# Plot rows over time, based on a rows-per-interval approach
+
+def plotRowsOverTime( dataframe , frequency ):
+    """
+    The dataframe has to be using a datetime column as the index.
+    You then specify the frequency that you are looking for results on, i.e.
+    day, month, year, etc.
+    Day = D
+    Month = M
+    Read "pandas Grouper" documentation for details.
+    """
+    dataframe.groupby(pandas.Grouper(freq=frequency)).size().plot()
+
+
+# Look at a column and try to learn something about it.
 
 def inspect_column( columnname , printout=True ):
     """
@@ -178,8 +231,9 @@ def inspect_column( columnname , printout=True ):
     info["notdatecount"] = notdate
 
     if len(possible_dates) > 0:
-        column_max = pandas.Series(possible_dates).max()
-        column_min = pandas.Series(possible_dates).min()
+        min_max_dates = minMaxDates(columnname)
+        column_max = min_max_dates["maximum"]
+        column_min = min_max_dates["minimum"]
     elif column_types["strings"] == 0:
         min_max_numbers = minMaxNumbers(columnname)
         column_max = min_max_numbers["maximum"]
@@ -224,33 +278,6 @@ def inspect_column( columnname , printout=True ):
         print(po)
     
     return info
-
-
-# Index on datetime column
-
-def makeDateTimeIndex( dataframe , columnname ):
-    """
-    Usage example:
-    hr = makeDateTimeIndex( pandas.read_csv("myCSVfile.csv"), "nameOfDateTimeColumnToIndexOn" )
-    """
-    dataframe[columnname] = pandas.to_datetime( dataframe[columnname] )
-    dataframe = dataframe.set_index( dataframe[columnname] )
-
-    return dataframe
-
-
-# Plot rows over time, based on a rows-per-interval approach
-
-def plotRowsOverTime( dataframe , frequency ):
-    """
-    The dataframe has to be using a datetime column as the index.
-    You then specify the frequency that you are looking for results on, i.e.
-    day, month, year, etc.
-    Day = D
-    Month = M
-    Read "pandas Grouper" documentation for details.
-    """
-    dataframe.groupby(pandas.Grouper(freq=frequency)).size().plot()
 
 
 ###### Patterns ######
