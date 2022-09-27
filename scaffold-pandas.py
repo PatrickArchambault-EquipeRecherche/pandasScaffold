@@ -3,7 +3,6 @@
 """A set of functions to make working with Python Pandas a little easier,
 and to collect idioms and patterns that are useful."""
 
-from dis import dis
 import pandas
 import dateutil
 
