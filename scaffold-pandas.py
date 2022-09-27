@@ -81,12 +81,12 @@ def proportionOfTypes( columnname , printout=False ):
             }
 
     if printout == True:
-        po = f"Integers: {int_prop}\n"
-        po = po + f"Strings: {str_prop}\n"
-        po = po + f"Floats: {float_prop}\n"
-        po = po + f"Booleans: {boolean_prop}\n"
-        po = po + f"Nones: {none_prop}\n"
-        po = po + f"Others: {other_prop}\n"
+        po = f"Integers: {int_prop}%\n"
+        po = po + f"Strings: {str_prop}%\n"
+        po = po + f"Floats: {float_prop}%\n"
+        po = po + f"Booleans: {boolean_prop}%\n"
+        po = po + f"Nones: {none_prop}%\n"
+        po = po + f"Others: {other_prop}%\n"
 
         print(po)
 
@@ -184,7 +184,7 @@ def plotRowsOverTime( dataframe , frequency ):
 
 # Look at a column and try to learn something about it.
 
-def inspect_column( columnname , printout=True ):
+def inspectColumn( columnname , printout=True ):
     """
     Look at the column, extract some information about it, and produce a set 
     of information that can be inferred without reading the whole column for 
