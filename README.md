@@ -28,7 +28,7 @@ Returns a dictionary with a "minimum" and a "maximum" value for one or more list
 
 
 `scaffold-pandas`.**`minMaxDates`**(*`*lists`*)
-Returns a dictionary with a "minimum" and a "maximum" value for one or more lists which may include dates. Uses `datutil.parser.parse` to check if a date can be understood from the element, ignoring anything that isn't a possible date.
+Returns a dictionary with a "minimum" and a "maximum" value for one or more lists which may include dates. Uses `dateutil.parser.parse` to check if a date can be understood from the element, ignoring anything that isn't a possible date.
 
 
 `scaffold-pandas`.**`makeDateTimeIndex`**(*`dataframe, columnname`*)
