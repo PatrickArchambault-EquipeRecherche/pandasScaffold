@@ -36,11 +36,11 @@ Returns a `pandas` Dataframe with a copy of columnname as an index of `datetime`
 
 
 `scaffold-pandas`.**`plotRowsOverTime`**(*`dataframe, frequency`*)
-Display a plot of Dataframe where the index is datetime objects and the rows are data points. Frequency values are D for day, M for month, Y for year. More information in the `pandas.Grouper` documentation.
+Display a plot of a Dataframe where the index is datetime objects and the rows are data points. Frequency values are D for day, M for month, Y for year. More information in the `pandas.Grouper` documentation.
 
 
 `scaffold-pandas`.**`inspectColumn`**(*`columnname, printout=True`*)
-Returns a dictionary of useful information about a column. Basics such as how many rows, how many factors, what the proportions of the factors are with respect to the whole column if there are fewer than eleven factors, maximum and minimun values, numbers of possible dates and non-dates, and the number of nulls in the column. If `printout` is True this is also printed to the console.
+Returns a dictionary of useful information about a column. Basics such as how many rows, how many factors, what the proportions of the factors are with respect to the whole column if there are fewer than eleven factors, maximum and minimum values, numbers of possible dates and non-dates, and the number of nulls in the column. If `printout` is True this is also printed to the console.
 
 
 ## Pattern Examples
