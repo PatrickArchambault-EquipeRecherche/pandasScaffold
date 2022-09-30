@@ -4,7 +4,7 @@
 each with their own copy of the header."""
 
 import csv
-
+import sys
 
 def splitCSV( filename , rowcount=100000 ):
 
@@ -26,7 +26,7 @@ def splitCSV( filename , rowcount=100000 ):
             if row != header:
                 tmprows.append(row)
                 count = count + 1
-                if count == 100000:
+                if count == rowcount:
                     #print(count)
                     tmpfilename = filename[:-4] + str(filenamecount) + ".csv"
                     with open(tmpfilename, 'w', newline='') as tmpcsv:
@@ -42,3 +42,12 @@ def splitCSV( filename , rowcount=100000 ):
             wrtr = csv.writer(tmpcsv)
             wrtr.writerow(header)
             wrtr.writerows(tmprows)
+
+if "__name__" == "__main__":
+    if sys.argv[1]:
+        if sys.argv[2]:
+            splitCSV(sys.argv[1], sys.argv[2])
+        else:
+            print("Usage: python3 splitCSV.py filename numberOfRowsPerFile")
+    else:
+        print("Usage: python3 splitCSV.py filename numberOfRowsPerFile")
