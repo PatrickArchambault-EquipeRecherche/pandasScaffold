@@ -2,12 +2,12 @@
 
 from setuptools import setup
 
-setup(name='scaffold-pandas',
+setup(name='scaffoldPandas',
       version='0.1',
       description='Helpful functions for pandas',
       url='https://github.com/PatrickArchambault-EquipeRecherche/scaffold-pandas',
       author='William Witteman',
       author_email='william@witteman.ca',
       license='GPL3',
-      packages=['scaffold-pandas'],
+      packages=['scaffoldPandas'],
       zip_safe=False)
