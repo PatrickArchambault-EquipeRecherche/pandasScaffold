@@ -9,5 +9,5 @@ setup(name='scaffold-pandas',
       author='William Witteman',
       author_email='william@witteman.ca',
       license='GPL3',
-      packages=['scaffold-pandas','splitCSV'],
+      packages=['scaffold-pandas'],
       zip_safe=False)
