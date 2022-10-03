@@ -43,10 +43,10 @@ def splitCSV( filename , rowcount=100000 ):
             wrtr.writerow(header)
             wrtr.writerows(tmprows)
 
-if "__name__" == "__main__":
+if __name__ == "__main__":
     if sys.argv[1]:
         if sys.argv[2]:
-            splitCSV(sys.argv[1], sys.argv[2])
+            splitCSV(sys.argv[1], int(sys.argv[2]))
         else:
             print("Usage: python3 splitCSV.py filename numberOfRowsPerFile")
     else:
