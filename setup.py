@@ -9,5 +9,5 @@ setup(name='scaffoldPandas',
       author='William Witteman',
       author_email='william@witteman.ca',
       license='GPL3',
-      packages=['scps'],
+      packages=['scaffoldPandas'],
       zip_safe=False)

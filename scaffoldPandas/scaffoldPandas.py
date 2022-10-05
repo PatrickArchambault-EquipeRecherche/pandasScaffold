@@ -244,7 +244,7 @@ def inspectColumn( columnname , printout=True ):
     info["maxvalue"] = column_max
     info["minvalue"] = column_min
 
-    codes, uniques = pandas.factorize(columnname, use_na_sentinel=False)
+    codes, uniques = pandas.factorize(columnname)
     # We want to know how much of the column is nulls, so we keep them in the 
     # "uniques" list by changing the default behaviour of factorize.
     info["factorcount"] = len(uniques)
@@ -281,33 +281,33 @@ def inspectColumn( columnname , printout=True ):
 
 ###### Patterns ######
 
-# Connect two or more dataframes together that probably overlap, dropping 
-# whatever is duplicated
-firstDataFrame = pandas.DataFrame()
-secondDataFrame = pandas.DataFrame()
-newDataFrame = pandas.concat( [firstDataFrame , firstDataFrame] ).drop_duplicates()
-
-
-# Change the encoding of NotANumber on import - useful when your data has 
-# inadvertent entries that are not null, like sodium (NA)
-from pandas._libs.parsers import STR_NA_VALUES
-
-disable_na_values = { "NA" }
-my_default_na_values = STR_NA_VALUES - disable_na_values
-df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
-
-
-# Pad out values with 4 leading zeros on pandas.read_csv()
-df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
-
-
-# Filter a dataframe into a subset that all meets a criteria.
-# In the example case, we use pandas.factorize() to get all of the values, 
-# because it _should_ be a small set, but there are mispellings, other 
-# weirdness that we have to find, so this pattern lets us group all rows 
-# that have the set of values in the list
-
-pos = ['DÉTECTÉ', 'DÉTEDÉTECTÉ', 'detecté', 'detecte', '03DÉTECTÉ']
-
-posCases = firstDataFrame[firstDataFrame["RESULTAT"].isin(pos)]
+## Connect two or more dataframes together that probably overlap, dropping 
+## whatever is duplicated
+#firstDataFrame = pandas.DataFrame()
+#secondDataFrame = pandas.DataFrame()
+#newDataFrame = pandas.concat( [firstDataFrame , firstDataFrame] ).drop_duplicates()
+#
+#
+## Change the encoding of NotANumber on import - useful when your data has 
+## inadvertent entries that are not null, like sodium (NA)
+#from pandas._libs.parsers import STR_NA_VALUES
+#
+#disable_na_values = { "NA" }
+#my_default_na_values = STR_NA_VALUES - disable_na_values
+#df = pandas.read_csv( "myCSVfile.csv" , na_values = my_default_na_values )
+#
+#
+## Pad out values with 4 leading zeros on pandas.read_csv()
+#df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
+#
+#
+## Filter a dataframe into a subset that all meets a criteria.
+## In the example case, we use pandas.factorize() to get all of the values, 
+## because it _should_ be a small set, but there are mispellings, other 
+## weirdness that we have to find, so this pattern lets us group all rows 
+## that have the set of values in the list
+#
+#pos = ['DÉTECTÉ', 'DÉTEDÉTECTÉ', 'detecté', 'detecte', '03DÉTECTÉ']
+#
+#posCases = firstDataFrame[firstDataFrame["RESULTAT"].isin(pos)]
 
