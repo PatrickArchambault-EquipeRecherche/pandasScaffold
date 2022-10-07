@@ -138,8 +138,10 @@ def minMaxDates( *lists ):
         justdates = []
         for item in listofdates:
             if pandas.notna(item):
-                if dateutil.parser.parse(item, fuzzy=True):
-                    justdates.append(dateutil.parser.parse(item))
+                try:
+                    justdates.append(dateutil.parser.parse(item, fuzzy=True))
+                except:
+                    pass
 
         return justdates
 
@@ -219,10 +221,12 @@ def inspectColumn( columnname , printout=True ):
         """Loop through the column, """
         #print(item)
         if pandas.notna(item):
-            if dateutil.parser.parse(item, fuzzy=True):
-                possible_dates.append(dateutil.parser.parse(item))
-                isdate = isdate + 1
-            else:
+            try:
+                maybe_date = dateutil.parser.parse(item, fuzzy=True)
+                if len(maybe_date) > 0:
+                    isdate = isdate + 1
+                    possible_dates.append(maybe_date)
+            except:
                 notdate = notdate + 1
         else:
             nulls = nulls + 1
