@@ -264,13 +264,17 @@ def inspectColumn( columnname , printout=True ):
                 factorProps[key] = pairs[key] / len(columnname) * 100
             info["factorprops"] = factorProps
     else:
-        print("Ten factors or more.")
+        #print("Ten factors or more.")
+        proportionOfFactors = f"Too many factors to analyse automatically: {len(uniques)}\n"
 
     po = "Column Details:\n"
     po = po + f"Number of Rows: {len(columnname)}\n"
     po = po + f"Number Factors: {len(uniques)}\n"
-    if proportionOfFactors:
+    try:
+        proportionOfFactors
         po = po + proportionOfFactors
+    except:
+        pass
     po = po + f"Maximun value: {column_max}\n"
     po = po + f"Minimum value: {column_min}\n"
     po = po + f"Number of possible dates: {isdate}\n"
