@@ -45,6 +45,8 @@ Returns a dictionary of useful information about a column. Basics such as how ma
 
 ## Pattern Examples
 
+NOTE: The patterns are at the bottom of the source file, and are commented out by default, so as to prevent this example code from running.
+
 - Merge and de-duplicate two overlapping Dataframes
 - Alter the default NA (Not Available) list to match your data
 - Pad a column on read using `converters` and string formatting
