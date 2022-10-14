@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scaffoldPandas"
-version = "0.11"
+version = "0.12"
 authors = [
   { name="William Witteman", email="william@witteman.ca" },
 ]
