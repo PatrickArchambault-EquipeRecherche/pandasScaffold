@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='scaffoldPandas',
-      version='0.12',
+      version='0.13',
       description='Helpful functions for pandas',
       url='https://github.com/PatrickArchambault-EquipeRecherche/scaffold-pandas',
       author='William Witteman',
