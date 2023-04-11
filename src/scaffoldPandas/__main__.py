@@ -286,6 +286,11 @@ def inspectColumn( columnname , printout=True ):
     
     return info
 
+def main():
+    return True
+
+if __name__ == "__main__":
+    main()
 
 ###### Patterns ######
 
