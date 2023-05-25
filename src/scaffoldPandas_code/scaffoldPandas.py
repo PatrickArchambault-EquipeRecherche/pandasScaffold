@@ -29,7 +29,7 @@ def byType( series , printout=False ):
             floats.append(element)
         elif type(element) == bool:
             booleans.append(element)
-        elif type(element) == None:
+        elif type(element) is None:
             nones.append(element)
         else:
             others.append(element)
@@ -43,7 +43,7 @@ def byType( series , printout=False ):
                 "others":others\
             }
 
-    if printout == True:
+    if printout is True:
         po = f"Integers: {len(output['integers'])}\n"
         po = po + f"Strings: {len(output['strings'])}\n"
         po = po + f"Floats: {len(output['floats'])}\n"
@@ -80,7 +80,7 @@ def proportionOfTypes( columnname , printout=False ):
                 "mytypes"   :   mytypes\
             }
 
-    if printout == True:
+    if printout is True:
         po = f"Integers: {int_prop}%\n"
         po = po + f"Strings: {str_prop}%\n"
         po = po + f"Floats: {float_prop}%\n"
@@ -140,7 +140,7 @@ def minMaxDates( *lists ):
             if pandas.notna(item):
                 try:
                     justdates.append(dateutil.parser.parse(item, fuzzy=True))
-                except:
+                except dateutil.ParserError:
                     pass
 
         return justdates
@@ -206,7 +206,6 @@ def inspectColumn( columnname , printout=True ):
         "factorcount":0,\
         "maxvalue":0,\
         "minvalue":0,\
-        "minvalue":0,\
         "datecount":0,\
         "notdatecount":0,\
         "nullcount":0\
@@ -226,7 +225,7 @@ def inspectColumn( columnname , printout=True ):
                 if len(maybe_date) > 0:
                     isdate = isdate + 1
                     possible_dates.append(maybe_date)
-            except:
+            except dateutil.ParserError:
                 notdate = notdate + 1
         else:
             nulls = nulls + 1
@@ -260,7 +259,8 @@ def inspectColumn( columnname , printout=True ):
             proportionOfFactors = "Proportion of factors:\n"
             factorProps = {}
             for key in pairs:
-                proportionOfFactors = proportionOfFactors + f"{key}:\t\t\t{pairs[key] / len(columnname) * 100}%\n"
+                proportionOfFactors = proportionOfFactors + \
+                    f"{key}:\t\t\t{pairs[key] / len(columnname) * 100}%\n"
                 factorProps[key] = pairs[key] / len(columnname) * 100
             info["factorprops"] = factorProps
     else:
@@ -273,7 +273,7 @@ def inspectColumn( columnname , printout=True ):
     try:
         proportionOfFactors
         po = po + proportionOfFactors
-    except:
+    except IndexError:
         pass
     po = po + f"Maximun value: {column_max}\n"
     po = po + f"Minimum value: {column_min}\n"
@@ -281,13 +281,14 @@ def inspectColumn( columnname , printout=True ):
     po = po + f"Number of non-dates: {notdate}\n"
     po = po + f"Number of nulls: {nulls}\n"
 
-    if printout == True:
+    if printout is True:
         print(po)
     
     return info
 
 def main():
-    return True
+    pos = True
+    return pos
 
 if __name__ == "__main__":
     main()
@@ -322,7 +323,8 @@ if __name__ == "__main__":
 #
 #
 ## Pad out values with 4 leading zeros on pandas.read_csv()
-#df = pandas.read_csv("myCSVfile.csv", converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
+#df = pandas.read_csv("myCSVfile.csv", \
+# converters={'UnpaddedColumn1': '{:0>4}'.format, 'UnpaddedColumn2': '{:0>4}'.format}) 
 #
 #
 ## Put all information for a given ID from multiple rows to a single row
@@ -357,7 +359,11 @@ if __name__ == "__main__":
 ## column, and turn them into a "flat" dataframe where there is just one row 
 ## per identifier. Look at "aggregate" functions.
 #
-#df = pandas.DataFrame([{"id":0,"a":1,"b":pandas.NA,"c":pandas.NA,},{"id":0,"a":pandas.NA,"b":1,"c":pandas.NA,},{"id":0,"a":pandas.NA,"b":pandas.NA,"c":1,},{"id":0,"a":pandas.NA,"b":pandas.NA,"c":pandas.NA,}])
+#df = pandas.DataFrame(\
+# [{"id":0,"a":1,"b":pandas.NA,"c":pandas.NA,},\
+# {"id":0,"a":pandas.NA,"b":1,"c":pandas.NA,},\
+# {"id":0,"a":pandas.NA,"b":pandas.NA,"c":1,},\
+# {"id":0,"a":pandas.NA,"b":pandas.NA,"c":pandas.NA,}])
 #
 #flatDF = df.groupby("id").first()
 #
